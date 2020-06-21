@@ -48,7 +48,6 @@ def obrabotka(data_student,name_subject):
     for i in range(len(name_subject)):
         str += data_student[i] + " "+ name_subject[i] +"\n"
     return str
-#будем считать что человек пишет только номер курса
 def kurse_and_profile(number_kurse, name_spec ,numb,group):
     vgm_url = 'http://www.rating.unecon.ru'
     html_text = requests.get(vgm_url).text

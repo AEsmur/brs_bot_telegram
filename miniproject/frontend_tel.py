@@ -1,6 +1,6 @@
 import telebot
 import backend_tel as back
-bot = telebot.TeleBot('1045088725:AAF2_sz5hTJo7kTjPn8m06jzGzoDMDmp_mQ')
+bot = telebot.TeleBot('')
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
