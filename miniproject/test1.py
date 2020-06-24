@@ -72,7 +72,11 @@ def kurse_and_profile(number_kurse, name_spec ,numb,group):
     for a in soup.find_all('a', href=True):
         data_students_kurse[a.get_text()] = 'http://www.rating.unecon.ru/' + a.get('href')
     #выбираем семетр
-    vgm_url =data_students_kurse.get(numb+" семестр")
+    if numb+" семестр (текущий)" in data_students_kurse:
+        st = numb+" семестр (текущий)"
+    else:
+        st = numb+" семестр"
+    vgm_url =data_students_kurse.get(st)
     html_text = requests.get(vgm_url).text
     soup = BeautifulSoup(html_text, 'html.parser')
     data_students_kurse.clear()
@@ -80,9 +84,9 @@ def kurse_and_profile(number_kurse, name_spec ,numb,group):
         data_students_kurse[a.get_text()] = 'http://www.rating.unecon.ru/' + a.get('href')
     #выбираем группу
     return data_students_kurse.get(group)
-sil1 = kurse_and_profile('4','Прикладная математика и информатика','3',"ПМ-1601")
-sil2 = kurse_and_profile('3','Прикладная математика и информатика','3',"ПМ-1701")
-sil3 = kurse_and_profile('2','Прикладная математика и информатика','3',"ПМ-1801")
+sil1 = kurse_and_profile('4','Прикладная математика и информатика','4',"ПМ-1601")
+sil2 = kurse_and_profile('3','Прикладная математика и информатика','4',"ПМ-1701")
+sil3 = kurse_and_profile('2','Прикладная математика и информатика','4',"ПМ-1801")
 
 spic1 = main("gdfgdf",sil1)
 spic2 = main("gdfgdf",sil2)
