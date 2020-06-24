@@ -25,12 +25,16 @@ def all_spic(name_student):
         for a in soup.find_all('a', href=True):
             if name_student in a.get_text():
                 data_students_N.append([a.get_text() ,'http://www.rating.unecon.ru/' + a.get('href')])
+    all_sub = []
+    k = 0
+    #очень плохо
     for i in data_students_N:
         vgm_url = "http://www.rating.unecon.ru/stud_cd.php?stud=558356"
-        html_text  = requests.get(vgm_url).text
+        html_text = requests.get(vgm_url).text
         soup = BeautifulSoup(html_text, 'html.parser')
         for link in soup.find_all('table'):
             for link2 in link.find_all("tr"):
                 for link3 in link2.find_all("td"):
                     print(link3.get_text())
+
 all_spic("Булыгин Максим Евгеньевич")
