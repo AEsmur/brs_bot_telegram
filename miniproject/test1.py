@@ -91,7 +91,7 @@ sil3 = kurse_and_profile('2','Прикладная математика и ин�
 spic1 = main("gdfgdf",sil1)
 spic2 = main("gdfgdf",sil2)
 spic3 = main("gdfgdf",sil3)
-k = int(input())
+k = int(input())+1
 pm16 = 0
 for i in spic1:
     pm16+=float(i[k])
