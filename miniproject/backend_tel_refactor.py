@@ -5,6 +5,7 @@ def all_candidate(student):
     data_students_kurse = get_all_curse_link()
     #находим студентов, у которых ФИО такое же,как и у того, что было прислано
     data_students_N = find_all_same_student(data_students_kurse,student)
+    print(data_students_N)
     #здесь каким-то магическим образом студент находит себя и "дает" ссылку на себя
     find_all_mark_student(data_students_N[0][1])
 
@@ -35,25 +36,36 @@ def find_all_same_student(data_student_kurse,student):
 def find_same_student(len_student_info,student_N,student):
     check_fam = False
     k = 0
-    for check in student_N.get_text().split(" "):
-        if len_student_info > 0:
-            if student.split(" ")[k].lower() == check.lower():
+    student_data = student.split(" ")
+    student_N_data = student_N.get_text().split(" ")
+    if len(student_N_data) < len(student_data):
+        for check in student_N_data:
+            if student_data[k].lower() == check.lower():
+                check_fam = True
+                print(student_data)
+            else:
+                check_fam = False
+                break
+            k += 1
+    else:
+        for check1 in student_data:
+            if check1.lower() == student_N_data[k].lower():
                 check_fam = True
             else:
                 check_fam = False
                 break
-        k += 1
-        len_student_info -= 1
+            k += 1
     if check_fam:
         return [student_N.get_text(), 'http://www.rating.unecon.ru/' + student_N.get('href')]
     else:
         return -1
 
 def find_all_mark_student(link_student):
-    soup = parse_html(link_student)
-    print(soup)
-    for tabl in soup.find_all('tbody'):
-        print(tabl)
+    html_text = requests.get(link_student).text
+    soup = BeautifulSoup(html_text, 'lxml')
+    table = soup.find('table')
+    tbody = table.find('tbody')
+    print(tbody)
 
 def parse_html(link):
     html_text = requests.get(link).text
