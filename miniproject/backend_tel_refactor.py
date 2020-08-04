@@ -121,5 +121,5 @@ def parse_html(link):
 #частные случай
 find_all_mark_student('http://www.rating.unecon.ru/stud_cd.php?stud=554679',0)
 #общие таблицы
-# find_all_mark_student("http://www.rating.unecon.ru/index.php?&y=2018&k=1&f=1&up=12020&g=all&upp=all&sort=fio&ball=hide&s=4",1)
-# find_some('http://www.rating.unecon.ru/index.php?&y=2018&k=1&f=1&up=12020&g=all&upp=all&sort=fio&ball=hide&s=4')
+#find_all_mark_student("http://www.rating.unecon.ru/index.php?&y=2018&k=1&f=1&up=12020&s=4&g=all&sort=fio&ball=hide&upp=244506",1)
+#find_some('http://www.rating.unecon.ru/index.php?&y=2018&k=1&f=1&up=12020&s=4&g=all&sort=fio&ball=hide&upp=244506')
