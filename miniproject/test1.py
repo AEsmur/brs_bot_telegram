@@ -39,7 +39,7 @@ def main(name_student,link_real):
     print(name_student)
     return all_students
 
-def obrabotka(data_student,name_subject):
+def obrabotka (data_student,name_subject):
     str = ''
     for i in range(len(name_subject)):
         str += data_student[i] + " "+ name_subject[i] +"\n"
@@ -84,13 +84,15 @@ def kurse_and_profile(number_kurse, name_spec ,numb,group):
         data_students_kurse[a.get_text()] = 'http://www.rating.unecon.ru/' + a.get('href')
     #выбираем группу
     return data_students_kurse.get(group)
-sil1 = kurse_and_profile('4','Прикладная математика и информатика','4',"ПМ-1601")
-sil2 = kurse_and_profile('3','Прикладная математика и информатика','4',"ПМ-1701")
-sil3 = kurse_and_profile('2','Прикладная математика и информатика','4',"ПМ-1801")
+
+sil1 = kurse_and_profile('4','Прикладная математика и информатика','2',"ПМ-1701")
+sil2 = kurse_and_profile('3','Прикладная математика и информатика','2',"ПМ-1801")
+#sil3 = kurse_and_profile('2','Прикладная математика и информатика','2',"ПМ-1901")
 
 spic1 = main("gdfgdf",sil1)
 spic2 = main("gdfgdf",sil2)
-spic3 = main("gdfgdf",sil3)
+#spic3 = main("gdfgdf",sil3)
+print(spic1)
 k = int(input())+1
 pm16 = 0
 for i in spic1:
@@ -99,8 +101,8 @@ pm17 = 0
 for i in spic2:
     pm17+=float(i[k])
 pm18 = 0
-for i in spic3:
-    pm18+=float(i[k])
-print(pm16/len(spic1))
-print(pm17/len(spic2))
-print(pm18/len(spic3))
+# for i in spic3:
+#     pm18+=float(i[k])
+# print(pm16/len(spic1))
+# print(pm17/len(spic2))
+# print(pm18/len(spic3))

@@ -7,13 +7,20 @@ def all_candidate(student):
     #находим студентов, у которых ФИО такое же,как и у того, что было прислано
     data_students_N = find_all_same_student(data_students_kurse,student)
     print(data_students_N)
+    return data_students_N
     #здесь каким-то магическим образом студент находит себя и "дает" ссылку на себя
-    mark_chosen_student = find_all_mark_student(data_students_N[0][1],0)
-    print(data_students_N[0][0])
-    for i in mark_chosen_student:
-        for i1 in i[1]:
-            print(i1)
+    # print(data_students_N[0][1])
+    # mark_chosen_student = find_all_mark_student(data_students_N[0][1],0)
+    # print(data_students_N[0][0])
+    # for i in mark_chosen_student:
+    #     for i1 in i[1]:
+    #         print(i1)
 
+def obrabotka_data_students(data_students_N):
+    view_list = ''
+    for i in range(len(data_students_N)):
+        view_list += str(i+1) + " " + data_students_N[i][0] +'\n'
+    return view_list
 
 def get_all_curse_link():
     vgm_url = 'http://www.rating.unecon.ru/rating.php?&f=1&p=12684&is_rating_vipusk=0&y=2018&y_vipusk=2020&s=none'
@@ -97,7 +104,8 @@ def find_all_mark_student(link_student,type_tabl):
         numberSemestr_data[0][1].remove([])
         numberSemestr_data = numberSemestr_data[0][1]
     for i in numberSemestr_data:
-        print(i)
+        for i1 in i[1]:
+            print(i1)
     return numberSemestr_data
 #парсит шапку таблицы ОБЩЕЙ,А НЕ ОПРЕДЕЛЕННОГО СТУДЕНТА
 def find_some(link_table_one):
@@ -117,9 +125,9 @@ def parse_html(link):
     soup = BeautifulSoup(html_text, 'html.parser')
     return soup
 
-#all_candidate("Иванов Александр")
+#all_candidate("Осипов")
 #частные случай
-find_all_mark_student('http://www.rating.unecon.ru/stud_cd.php?stud=554679',0)
+#find_all_mark_student('http://www.rating.unecon.ru/stud_cd.php?stud=554679',0)
 #общие таблицы
 #find_all_mark_student("http://www.rating.unecon.ru/index.php?&y=2018&k=1&f=1&up=12020&s=4&g=all&sort=fio&ball=hide&upp=244506",1)
 #find_some('http://www.rating.unecon.ru/index.php?&y=2018&k=1&f=1&up=12020&s=4&g=all&sort=fio&ball=hide&upp=244506')
