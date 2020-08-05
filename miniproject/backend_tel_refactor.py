@@ -21,6 +21,7 @@ def obrabotka_data_students(data_students_N):
     for i in range(len(data_students_N)):
         view_list += str(i+1) + " " + data_students_N[i][0] +'\n'
     return view_list
+
 def final_data_mark_student(semestr_data):
     res = ''
     semestr_all = []
@@ -31,6 +32,7 @@ def final_data_mark_student(semestr_data):
         semestr_all.append(res)
         res = ''
     return semestr_all
+
 def get_all_curse_link():
     vgm_url = 'http://www.rating.unecon.ru/rating.php?&f=1&p=12684&is_rating_vipusk=0&y=2018&y_vipusk=2020&s=none'
     soup = parse_html(vgm_url)
