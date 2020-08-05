@@ -1,63 +1,54 @@
 import requests
 from bs4 import BeautifulSoup
 import urllib.request
+
 def all_candidate(student):
     #находим линки всех курсов
     data_students_kurse = get_all_curse_link()
-    #находим студентов, у которых ФИО такое же,как и у того, что было прислано
-    data_students_N = find_all_same_student(data_students_kurse,student)
-    print(data_students_N)
+    #находим студентов, у которых ФИО такое же, как и у того, что было прислано
+    data_students_N = find_all_same_student(data_students_kurse, student)
     return data_students_N
-    #здесь каким-то магическим образом студент находит себя и "дает" ссылку на себя
-    # print(data_students_N[0][1])
-    # mark_chosen_student = find_all_mark_student(data_students_N[0][1],0)
-    # print(data_students_N[0][0])
-    # for i in mark_chosen_student:
-    #     for i1 in i[1]:
-    #         print(i1)
+    
 def final_marks_students_for_view(data_marks):
-    view = ''
-    semestr = []
+    view, semestr = [], []
+    
     for i in data_marks:
-        view += '\n' + str(i[0][0])
-        type_kt = 0
+        view.append(i[0][0])
+        there_is_kt0 = True        
         for k in i[1][0]:
-            if k == '0':
-                type_kt += 1
-            elif k == '4':
-                type_kt += 2
-                break
-        if type_kt == 0:
-            for i1 in i[1][1:]:
-                for j in range(len(i1[0])):
-                    if i1[0][j : j+2] in ['н)', 'т)']:
-                        view += '\n' + str(i1[0][: j+2]) + '\nКТ1: ' + str(i1[1]) + '\nКТ2: ' + str(i1[2]) + '\nКТ3: ' + str(i1[3]) + '\nБаллы за экзамен: ' + str(i1[4]) + '\n∑баллов: ' + str(i1[5]) + '\nОценка: ' + str(i1[6])
-                        break
-        elif type_kt == 1:
-            for i1 in i[1][1:]:
-                for j in range(len(i1[0])):
-                    if i1[0][j : j+2] in ['н)', 'т)']:
-                        view += '\n' + str(i1[0][: j+2]) + '\nКТ0: ' + str(i1[1])+ '\nКТ1: ' + str(i1[2]) + '\nКТ2: ' + str(i1[3]) + '\nКТ3: ' + str(i1[4]) + '\nБаллы за экзамен: ' + str(i1[5]) + '\n∑баллов: ' + str(i1[6]) + '\nОценка: ' + str(i1[7])
-                        break
-        elif type_kt == 2:
-            for i1 in i[1][1:]:
-                for j in range(len(i1[0])):
-                    if i1[0][j : j+2] in ['н)', 'т)']:
-                        view += '\n' + str(i1[0][: j+2]) + '\nКТ1: ' + str(i1[1])+ '\nКТ2: ' + str(i1[2]) + '\nКТ3: ' + str(i1[3]) + '\nКТ4: ' + str(i1[4]) + '\nБаллы за экзамен: ' + str(i1[5]) + '\n∑баллов: ' + str(i1[6]) + '\nОценка: ' + str(i1[7])
-                        break
-        elif type_kt == 3:
-            for i1 in i[1][1:]:
-                for j in range(len(i1[0])):
-                    if i1[0][j : j+2] in ['н)', 'т)']:
-                        view += '\n' + str(i1[0][: j+2]) + '\nКТ0: ' + str(i1[1]) + '\nКТ1: ' + str(i1[2]) + '\nКТ2: ' + str(i1[3]) + '\nКТ3: ' + str(i1[4]) + '\nКТ4: ' + str(i1[5]) + '\nБаллы за экзамен: ' + str(i1[6]) + '\n∑баллов: ' + str(i1[7]) + '\nОценка: ' + str(i1[8])
-                        break
-        semestr.append(view)
-        view = ''
+            if k != '0':
+                there_is_kt0 = False
+                
+        for i1 in i[1][1:]:
+            for j in range(len(i1[0])):
+                if i1[0][j: j+2] in ['н)', 'т)']:
+                    view.append(i1[0][: j+2])
+                    if there_is_kt0 == False:
+                        [view.append(f'КТ{k+1}: ' + i1[k+1])
+                         for k in range(len(i[1][0][1:-3]))]
+                        view.extend(['Баллы за экзамен: ' + i1[-3],
+                                    '∑баллов: ' + i1[-2],
+                                    'Оценка: ' + i1[-1]])
+                    else:
+                        [view.append(f'КТ{k}: ' + i1[k+1])
+                         for k in range(len(i[1][0][1:-3]))]
+                        view.extend(['Баллы за экзамен: ' + i1[-3],
+                                    '∑баллов: ' + i1[-2],
+                                    'Оценка: ' + i1[-1]])
+                    break
+                
+        semestr.append('\n' + '\n'.join(view))
+        view = []        
     return semestr
+
+def choose_sem(data_marks, numb):
+    semesters = final_marks_students_for_view(data_marks)
+    return semesters[-numb]
+
 def obrabotka_data_students(data_students_N):
     view_list = ''
     for i in range(len(data_students_N)):
-        view_list += str(i+1) + " " + data_students_N[i][0] +'\n'
+        view_list += str(i+1) + ". " + data_students_N[i][0] +'\n'
     return view_list
 
 def final_data_mark_student(semestr_data):
@@ -79,7 +70,7 @@ def get_all_curse_link():
         data_students_kurse.append([a.get_text(), 'http://www.rating.unecon.ru/' + a.get('href')])
     return data_students_kurse
 
-def find_all_same_student(data_student_kurse,student):
+def find_all_same_student(data_student_kurse, student):
     data_students_N = []
     for N_curse_link in data_student_kurse:
         soup = parse_html(N_curse_link[1])
@@ -87,13 +78,13 @@ def find_all_same_student(data_student_kurse,student):
         for prob_N in soup.find_all('table'):
             for student_N in prob_N.find_all('a', href=True):
 
-                prom = compare_stundents(student_N,student)
+                prom = compare_stundents(student_N, student)
                 if prom != -1:
                     data_students_N.append(prom)
 
     return data_students_N
 
-def compare_stundents(student_N,student):
+def compare_stundents(student_N, student):
     check_fam = False
     k = 0
     student_data = student.split(" ")
@@ -120,9 +111,9 @@ def compare_stundents(student_N,student):
     else:
         return -1
 
-#парсит как и индивидуальные страницы,так и общие
+#парсит как и индивидуальные страницы, так и общие
 # 0 - частная, 1 - общая
-def find_all_mark_student(link_student,type_tabl):
+def find_all_mark_student(link_student, type_tabl):
     soup = parse_html(link_student)
     numberSemestr_data = []
     prom_semestr_subject = []
@@ -152,11 +143,12 @@ def find_all_mark_student(link_student,type_tabl):
         numberSemestr_data[0][1].remove([])
         numberSemestr_data[0][1].remove([])
         numberSemestr_data = numberSemestr_data[0][1]
-    for i in numberSemestr_data:
-        for i1 in i[1]:
-            print(i1)
+    #for i in numberSemestr_data:
+        #for i1 in i[1]:
+            #print(i1)
     return numberSemestr_data
-#парсит шапку таблицы ОБЩЕЙ,А НЕ ОПРЕДЕЛЕННОГО СТУДЕНТА
+
+#парсит шапку таблицы ОБЩЕЙ, А НЕ ОПРЕДЕЛЕННОГО СТУДЕНТА
 def find_some(link_table_one):
     name_sub = []
     soup = parse_html(link_table_one)
@@ -174,6 +166,8 @@ def parse_html(link):
     soup = BeautifulSoup(html_text, 'html.parser')
     return soup
 
+#final_marks_students_for_view(find_all_mark_student('http://www.rating.unecon.ru/stud_cd.php?stud=535578',0))
+#choose_sem(find_all_mark_student('http://www.rating.unecon.ru/stud_cd.php?stud=554679',0),2)
 #all_candidate("Осипов")
 #частные случай
 #find_all_mark_student('http://www.rating.unecon.ru/stud_cd.php?stud=554679',0)
