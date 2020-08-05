@@ -15,7 +15,45 @@ def all_candidate(student):
     # for i in mark_chosen_student:
     #     for i1 in i[1]:
     #         print(i1)
-
+def final_marks_students_for_view(data_marks):
+    view = ''
+    semestr = []
+    for i in data_marks:
+        view += '\n' + str(i[0][0])
+        type_kt = 0
+        for k in i[1][0]:
+            if k == '0':
+                type_kt += 1
+            elif k == '4':
+                type_kt += 2
+                break
+        if type_kt == 0:
+            for i1 in i[1][1:]:
+                for j in range(len(i1[0])):
+                    if i1[0][j : j+2] in ['н)', 'т)']:
+                        view += '\n' + str(i1[0][: j+2]) + '\nКТ1: ' + str(i1[1]) + '\nКТ2: ' + str(i1[2]) + '\nКТ3: ' + str(i1[3]) + '\nБаллы за экзамен: ' + str(i1[4]) + '\n∑баллов: ' + str(i1[5]) + '\nОценка: ' + str(i1[6])
+                        break
+        elif type_kt == 1:
+            for i1 in i[1][1:]:
+                for j in range(len(i1[0])):
+                    if i1[0][j : j+2] in ['н)', 'т)']:
+                        view += '\n' + str(i1[0][: j+2]) + '\nКТ0: ' + str(i1[1])+ '\nКТ1: ' + str(i1[2]) + '\nКТ2: ' + str(i1[3]) + '\nКТ3: ' + str(i1[4]) + '\nБаллы за экзамен: ' + str(i1[5]) + '\n∑баллов: ' + str(i1[6]) + '\nОценка: ' + str(i1[7])
+                        break
+        elif type_kt == 2:
+            for i1 in i[1][1:]:
+                for j in range(len(i1[0])):
+                    if i1[0][j : j+2] in ['н)', 'т)']:
+                        view += '\n' + str(i1[0][: j+2]) + '\nКТ1: ' + str(i1[1])+ '\nКТ2: ' + str(i1[2]) + '\nКТ3: ' + str(i1[3]) + '\nКТ4: ' + str(i1[4]) + '\nБаллы за экзамен: ' + str(i1[5]) + '\n∑баллов: ' + str(i1[6]) + '\nОценка: ' + str(i1[7])
+                        break
+        elif type_kt == 3:
+            for i1 in i[1][1:]:
+                for j in range(len(i1[0])):
+                    if i1[0][j : j+2] in ['н)', 'т)']:
+                        view += '\n' + str(i1[0][: j+2]) + '\nКТ0: ' + str(i1[1]) + '\nКТ1: ' + str(i1[2]) + '\nКТ2: ' + str(i1[3]) + '\nКТ3: ' + str(i1[4]) + '\nКТ4: ' + str(i1[5]) + '\nБаллы за экзамен: ' + str(i1[6]) + '\n∑баллов: ' + str(i1[7]) + '\nОценка: ' + str(i1[8])
+                        break
+        semestr.append(view)
+        view = ''
+    return semestr
 def obrabotka_data_students(data_students_N):
     view_list = ''
     for i in range(len(data_students_N)):
@@ -140,5 +178,5 @@ def parse_html(link):
 #частные случай
 #find_all_mark_student('http://www.rating.unecon.ru/stud_cd.php?stud=554679',0)
 #общие таблицы
-#find_all_mark_student("http://www.rating.unecon.ru/index.php?&y=2018&k=1&f=1&up=12020&s=4&g=all&sort=fio&ball=hide&upp=244506",1)
+#find_all_mark_student("http://www.rat ing.unecon.ru/index.php?&y=2018&k=1&f=1&up=12020&s=4&g=all&sort=fio&ball=hide&upp=244506",1)
 #find_some('http://www.rating.unecon.ru/index.php?&y=2018&k=1&f=1&up=12020&s=4&g=all&sort=fio&ball=hide&upp=244506')
